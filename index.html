@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS AI Practitioner - Week 2 Exam Practice</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Source+Code+Pro:wght@400;500&display=swap');
+:root{--bg:#0a0e1a;--card:#111827;--card2:#1a2235;--or:#ff6b2b;--am:#f59e0b;--gr:#10b981;--rd:#ef4444;--bl:#3b82f6;--pu:#8b5cf6;--tx:#f1f5f9;--tx2:#94a3b8;--mu:#64748b;--bd:#1e293b;--bd2:#334155}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.6}
+.app{max-width:920px;margin:0 auto;padding:20px}
+.hdr{text-align:center;padding:36px 0 28px;position:relative}
+.hdr::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:3px;background:var(--or);border-radius:2px}
+.badge{display:inline-block;background:linear-gradient(135deg,var(--or),#e05a1a);color:#fff;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
+.hdr h1{font-size:26px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px;background:linear-gradient(to right,#f1f5f9,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr p{font-size:13px;color:var(--mu)}
+.hdr .src{font-size:11px;color:var(--am);margin-top:8px;font-weight:500}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0}
+.mc{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:22px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--or);opacity:0;transition:opacity .25s}
+.mc:hover{border-color:var(--bd2);background:var(--card2);transform:translateY(-2px)}
+.mc:hover::before,.mc.on::before{opacity:1}
+.mc.on{border-color:var(--or)}
+.mi{font-size:26px;margin-bottom:10px}
+.mc h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.mc p{font-size:12px;color:var(--mu);line-height:1.5}
+.tps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.ch{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500}
+.ch:hover{border-color:var(--bd2);background:var(--card2)}
+.ch.on{border-color:var(--bl);background:rgba(59,130,246,.08)}
+.ch .d{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ch .c{margin-left:auto;font-size:11px;color:var(--mu);font-family:'Source Code Pro',monospace}
+.br{display:flex;gap:10px;margin-top:16px}
+.b{padding:12px 24px;border-radius:10px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;border:none}
+.b1{background:linear-gradient(135deg,var(--or),#e05a1a);color:#fff}
+.b1:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(255,107,43,.3)}
+.b2{background:var(--card);border:1px solid var(--bd);color:var(--tx)}
+.b2:hover{border-color:var(--bd2)}
+.b:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+.pg{background:var(--card);border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.pt{flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.pf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--or),var(--am));transition:width .4s}
+.px{font-size:12px;font-family:'Source Code Pro',monospace;color:var(--mu);white-space:nowrap}
+.tm{font-family:'Source Code Pro',monospace;font-size:14px;color:var(--am)}
+.qc{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:26px;margin-bottom:14px}
+.qh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.qn{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--mu)}
+.qt{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600;letter-spacing:.5px}
+.qt.tf{background:rgba(139,92,246,.15);color:#a78bfa}
+.qt.tg{background:rgba(59,130,246,.15);color:#60a5fa}
+.qt.ta{background:rgba(245,158,11,.15);color:#fbbf24}
+.qt.tr{background:rgba(16,185,129,.15);color:#34d399}
+.qs{font-size:14.5px;color:#e2e8f0;line-height:1.8;margin-bottom:14px;padding:16px 18px;background:linear-gradient(135deg,rgba(30,41,59,.8),rgba(15,23,42,.9));border-radius:12px;border-left:4px solid var(--bl);font-weight:400;letter-spacing:.01em}
+.hl{background:rgba(251,191,36,.15);color:#fde68a;padding:1px 5px;border-radius:3px;font-weight:600;border-bottom:2px solid rgba(251,191,36,.35);animation:hlPop .6s ease}
+@keyframes hlPop{0%{background:rgba(251,191,36,0)}40%{background:rgba(251,191,36,.3)}100%{background:rgba(251,191,36,.15)}}
+.qx{font-size:15px;font-weight:500;line-height:1.7;margin-bottom:6px}
+.qi{font-size:12px;color:var(--am);font-weight:600;margin-bottom:18px;font-style:italic}
+.os{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.o{background:transparent;border:1px solid var(--bd);border-radius:10px;padding:13px 16px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:12px;line-height:1.5}
+.o:hover:not(.dis){border-color:var(--bd2);background:var(--card2)}
+.o.sel{border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.08)}
+.o.cor{border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.08)}
+.o.inc{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.08)}
+.o.dis{cursor:default}
+.ol{flex-shrink:0;width:26px;height:26px;border-radius:7px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Source Code Pro',monospace}
+.o.cor .ol{background:var(--gr);color:#fff}
+.o.inc .ol{background:var(--rd);color:#fff}
+.o.sel .ol{background:var(--bl);color:#fff}
+.eb{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:18px;margin-top:14px;animation:fi .3s}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.eb h4{font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.eb h4.ct{color:var(--gr)}
+.eb h4.it{color:var(--rd)}
+.et{font-size:13px;color:var(--tx2);line-height:1.7;margin-bottom:10px}
+.ea{background:rgba(255,107,43,.06);border:1px solid rgba(255,107,43,.2);border-radius:8px;padding:12px;margin:10px 0}
+.ea h5{font-size:11px;color:var(--or);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.ea p{font-size:12px;color:var(--tx2);line-height:1.6}
+.kb{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:12px;margin-top:10px}
+.kb h5{font-size:11px;color:var(--am);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.kb p{font-size:12px;color:var(--tx2);line-height:1.6}
+.kt{display:inline-block;background:rgba(245,158,11,.12);color:var(--am);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin:2px 3px;font-family:'Source Code Pro',monospace}
+.wb{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:8px;padding:12px;margin-top:10px}
+.wb h5{font-size:11px;color:var(--pu);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.wb p{font-size:12px;color:var(--tx2);line-height:1.6}
+.sc{text-align:center;padding:36px 20px}
+.sr{width:160px;height:160px;margin:0 auto 22px;position:relative}
+.sr svg{transform:rotate(-90deg);width:160px;height:160px}
+.sr .rb{fill:none;stroke:var(--bd);stroke-width:8}
+.sr .rf{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease}
+.sv{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sv .nm{font-size:42px;font-weight:800;line-height:1}
+.sv .lb{font-size:12px;color:var(--mu);margin-top:4px}
+.sb{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+.ss{background:var(--card);border-radius:12px;padding:16px}
+.ss .sn{font-size:24px;font-weight:700;font-family:'Source Code Pro',monospace}
+.ss .sl{font-size:11px;color:var(--mu);margin-top:4px}
+.pi{display:inline-block;padding:8px 20px;border-radius:8px;font-size:14px;font-weight:700;letter-spacing:.5px;margin-bottom:18px}
+.pi.pa{background:rgba(16,185,129,.12);color:var(--gr)}
+.pi.fa{background:rgba(239,68,68,.12);color:var(--rd)}
+.ri{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:10px;text-align:left;cursor:pointer;transition:all .2s}
+.ri:hover{background:var(--card2)}
+.rh{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.rq{font-size:13px;color:var(--tx2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.st{font-size:18px;font-weight:700;margin:22px 0 10px}
+.su{font-size:13px;color:var(--mu);margin-bottom:18px}
+.hidden{display:none!important}
+@media(max-width:600px){.modes,.tps{grid-template-columns:1fr}.sb{grid-template-columns:1fr}.hdr h1{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<div class="hdr">
+<div class="badge">AIF-C01 · Week 2</div>
+<h1>Scenario-Based Exam Practice</h1>
+<p>20 Questions · Mirrors TutorialDojo & Stéphane Maarek Exam Format</p>
+<div class="src">AI Fundamentals · Bedrock & GenAI · Prompt Engineering · Amazon Q · Responsible AI</div>
+</div>
+
+<div id="s0">
+<div class="modes">
+<div class="mc" onclick="pm('exam',this)"><div class="mi">⏱️</div><h3>Timed Exam Mode</h3><p>20 questions · 30 min timer · Score at the end. Simulates real exam conditions.</p></div>
+<div class="mc" onclick="pm('practice',this)"><div class="mi">📖</div><h3>Practice Mode</h3><p>20 questions · No timer · Instant feedback with full explanations after each question.</p></div>
+</div>
+<div class="st">Filter by Domain</div>
+<div class="su">Select domains or leave all selected for a full mixed exam.</div>
+<div class="tps">
+<div class="ch on" data-t="f" onclick="tt(this)"><div class="d" style="background:var(--pu)"></div>AI & ML Fundamentals<span class="c">5</span></div>
+<div class="ch on" data-t="g" onclick="tt(this)"><div class="d" style="background:var(--bl)"></div>GenAI & Bedrock<span class="c">8</span></div>
+<div class="ch on" data-t="a" onclick="tt(this)"><div class="d" style="background:var(--am)"></div>Applications & Prompt Eng<span class="c">4</span></div>
+<div class="ch on" data-t="r" onclick="tt(this)"><div class="d" style="background:var(--gr)"></div>Responsible AI & Security<span class="c">3</span></div>
+</div>
+<div class="br" style="justify-content:center;margin-top:28px"><button class="b b1" onclick="go()" id="gb">Start Exam →</button></div>
+</div>
+
+<div id="s1" class="hidden">
+<div class="pg"><span class="px" id="px">1/20</span><div class="pt"><div class="pf" id="pf" style="width:5%"></div></div><div class="tm" id="ti"></div></div>
+<div class="qc">
+<div class="qh"><span class="qn" id="qn"></span><span class="qt" id="qt"></span></div>
+<div id="qsc"></div>
+<div class="qx" id="qx"></div>
+<div class="qi" id="qi"></div>
+<div class="os" id="os"></div>
+<div class="br"><button class="b b1" id="sb" onclick="su()" disabled>Check Answer</button><button class="b b2 hidden" id="nb" onclick="nx()">Next →</button></div>
+<div id="ea"></div>
+</div>
+</div>
+
+<div id="s2" class="hidden">
+<div class="sc">
+<div class="sr"><svg viewBox="0 0 160 160"><circle class="rb" cx="80" cy="80" r="70"/><circle class="rf" id="rf" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82"/></svg><div class="sv"><div class="nm" id="sp">0%</div><div class="lb">Score</div></div></div>
+<div class="pi" id="pi"></div>
+<div class="sb"><div class="ss"><div class="sn" id="s_c" style="color:var(--gr)">0</div><div class="sl">Correct</div></div><div class="ss"><div class="sn" id="s_i" style="color:var(--rd)">0</div><div class="sl">Incorrect</div></div><div class="ss"><div class="sn" id="s_t" style="color:var(--am)">--</div><div class="sl">Time</div></div></div>
+<div class="st" style="margin-top:28px">Review Answers</div>
+<div id="rl"></div>
+<div class="br" style="justify-content:center;margin-top:22px"><button class="b b2" onclick="fr()">📋 Full Review</button><button class="b b1" onclick="rs()">Try Again</button></div>
+</div>
+</div>
+
+<div id="s3" class="hidden"></div>
+</div>
+
+<script>
+const Q=[
+// ═══ AI & ML FUNDAMENTALS (5) ═══
+{id:1,t:"f",tag:"AI & ML Fundamentals",tc:"tf",
+sc:"A pharmaceutical company has built a machine learning model to classify clinical trial patients into three risk categories — low, moderate, and high — based on biomarker data. The model achieves 97% accuracy on training data but only 61% on new patient records. The data science team needs to diagnose the root cause before the model can be deployed in clinical settings.",
+tx:"What is the MOST likely issue with this model, and what characteristic does it exhibit?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"The model is underfitting — it has not learned enough patterns from the training data, resulting in poor performance across all datasets"},
+{l:"B",t:"The model is overfitting — it has memorized the training data rather than learning generalizable patterns, leading to high training accuracy but poor test performance"},
+{l:"C",t:"The model has high bias and low variance — it is too simple to capture the underlying relationships in the biomarker data"},
+{l:"D",t:"The model suffers from data drift — the statistical properties of the input data have changed since the model was trained"}],
+cor:["B"],
+exp:"When a model shows high accuracy on training data (97%) but significantly lower performance on unseen data (61%), this is the textbook definition of overfitting. The model has memorized noise and specific patterns in the training set rather than learning generalizable features. Underfitting would show poor performance on BOTH training and test data. Data drift relates to changes in production data over time, not initial evaluation gaps.",
+alert:"Overfitting = high training accuracy + poor test accuracy. Underfitting = poor on BOTH. This pattern appears frequently on the exam with different industry scenarios.",
+kw:["overfitting","high training low test","memorized","generalization","regularization"]},
+
+{id:2,t:"f",tag:"AI & ML Fundamentals",tc:"tf",
+sc:"A logistics company is deploying a machine learning model to classify packages into 15 different handling categories on its sorting line. Out of every 50,000 packages, only about 200 belong to the 'fragile-oversized' category. The operations team is concerned that the model might appear accurate overall while completely failing to identify these rare but critical packages.",
+tx:"Which evaluation metric is MOST appropriate for measuring this model's performance given the class imbalance?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Accuracy — it measures the overall percentage of correct predictions across all categories"},
+{l:"B",t:"Root Mean Squared Error (RMSE) — it measures the average magnitude of prediction errors"},
+{l:"C",t:"F1 Score — it balances precision and recall, which is critical for evaluating performance on imbalanced datasets"},
+{l:"D",t:"R-squared — it indicates how well the model explains variance in the data"}],
+cor:["C"],
+exp:"With highly imbalanced data (200 out of 50,000), accuracy is misleading — a model that never predicts 'fragile-oversized' would still achieve 99.6% accuracy while missing every critical package. F1 Score balances precision (of predicted fragile items, how many actually are?) and recall (of actual fragile items, how many did we catch?). RMSE and R-squared are regression metrics, not classification metrics.",
+alert:"When the exam mentions rare classes, imbalanced data, or skewed distributions → think F1 Score, Precision, Recall. Accuracy is a trap answer for imbalanced datasets.",
+kw:["F1 score","imbalanced data","precision","recall","class imbalance","misleading accuracy"]},
+
+{id:3,t:"f",tag:"AI & ML Fundamentals",tc:"tf",
+sc:"A media streaming company is processing user queries through its AI recommendation engine. The engineering team notices that the model breaks down each user query into smaller pieces before processing — some pieces represent whole words, others represent parts of words like prefixes or suffixes, and some represent punctuation marks.",
+tx:"What is the term for these discrete units that the model processes, and what concept defines the maximum number of these units the model can handle at once?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"The discrete units are called embeddings, and the maximum capacity is called the training window"},
+{l:"B",t:"The discrete units are called tokens, and the maximum capacity is called the context window"},
+{l:"C",t:"The discrete units are called vectors, and the maximum capacity is called the inference window"},
+{l:"D",t:"The discrete units are called features, and the maximum capacity is called the batch size"}],
+cor:["B"],
+exp:"Tokens are the fundamental units of text that AI models process — they can be whole words, parts of words (sub-words), or single characters/punctuation. The context window defines the maximum number of tokens a model can process at once. Embeddings are vector representations of tokens. Vectors are mathematical constructs. Features are input variables for ML models. Batch size relates to training, not input capacity.",
+kw:["tokens","context window","sub-words","discrete units","maximum capacity"]},
+
+{id:4,t:"f",tag:"AI & ML Fundamentals",tc:"tf",
+sc:"A fintech startup is building a customer support chatbot using Amazon Bedrock. The product manager wants the chatbot to produce consistent, focused responses rather than creative or varied answers. The engineering team is experimenting with inference parameters to control the model's output behavior.",
+tx:"Which inference parameters should the team adjust, and in which direction? (Select TWO)",
+ins:"Select TWO answers.",m:true,
+ops:[
+{l:"A",t:"Set Temperature to a low value (close to 0) to reduce randomness and increase determinism"},
+{l:"B",t:"Set Temperature to a high value (close to 1) to increase the diversity of responses"},
+{l:"C",t:"Set Top P to a low value to restrict the model to sampling from only the highest-probability tokens"},
+{l:"D",t:"Increase the Response length parameter to allow the model more space to generate comprehensive answers"}],
+cor:["A","C"],
+exp:"Temperature (0-1) regulates creativity — low = deterministic, high = creative. Top P represents the PERCENTAGE of most likely candidates considered for the next token — low = more focused. Together, low Temperature + low Top P produce consistent, predictable responses ideal for customer support. Response length controls output length, not randomness. Remember: Top K = NUMBER of candidates, Top P = PERCENTAGE of candidates.",
+alert:"The exam frequently tests Temperature vs Top P vs Top K. Remember: Temperature = creativity dial (0-1). Top K = NUMBER of candidates. Top P = PERCENTAGE of candidates. Response length = min/max tokens in output. Stop sequences = characters that halt generation.",
+kw:["Temperature low = deterministic","Top P = percentage","Top K = number","inference parameters","focused responses"]},
+
+{id:5,t:"f",tag:"AI & ML Fundamentals",tc:"tf",
+sc:"A data science team at an insurance company is preparing to train a fraud detection model. The team lead asks a junior data scientist to explain the key constituents of an effective prompt when using a foundation model on Amazon Bedrock for initial prototyping.",
+tx:"Which of the following correctly identifies the four key constituents of a good prompting technique?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Instructions, Context, Input data, Output Indicator"},
+{l:"B",t:"Instructions, Hyperparameters, Input data, Output Indicator"},
+{l:"C",t:"Hyperparameters, Context, Input data, Output Indicator"},
+{l:"D",t:"Instructions, Parameters, Input data, Output Indicator"}],
+cor:["A"],
+exp:"The four constituents of a good prompt are: Instructions (task description for the model), Context (external information to guide behavior), Input data (what you want a response for), and Output Indicator (desired format/type of output). Hyperparameters control the training process (learning rate, epochs, etc.) and model parameters are internal weights learned during training — neither is part of prompt engineering.",
+alert:"Hyperparameters and model parameters are NOT part of prompting technique. Hyperparameters = external training configs (learning rate, batch size). Model parameters = internal weights learned during training.",
+kw:["instructions","context","input data","output indicator","prompt constituents"]},
+
+// ═══ GENAI & BEDROCK (8) ═══
+{id:6,t:"g",tag:"GenAI & Bedrock",tc:"tg",
+sc:"A digital marketing agency is evaluating generative AI technologies to automate the creation of ad copy, product descriptions, and social media content. The creative director wants to understand the fundamental principle behind how generative AI models produce original content from text prompts.",
+tx:"Which of the following BEST describes how generative AI models create new content?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"By using fixed rules and templates created by developers without any learning from data"},
+{l:"B",t:"By copying and recombining exact passages from the training data to form new outputs"},
+{l:"C",t:"By learning statistical patterns from large training datasets and sampling novel outputs based on probability distributions"},
+{l:"D",t:"By searching the internet in real-time to find and return relevant existing content to the user"}],
+cor:["C"],
+exp:"Generative AI models learn statistical patterns and relationships from large training datasets during pre-training. When generating content, they sample from probability distributions to produce novel outputs. The content is new — not copied from training data. They don't use fixed rules (that's traditional programming), don't copy exact passages (that would be a search engine), and don't search the internet in real-time (they use learned parameters stored in model weights).",
+kw:["statistical patterns","probability distributions","novel outputs","learned from training data","sampling"]},
+
+{id:7,t:"g",tag:"GenAI & Bedrock",tc:"tg",
+sc:"A venture capital firm is evaluating AI startups and needs its analysts to clearly understand the hierarchy of AI technologies. The managing partner has asked for a definitive explanation of how Artificial Intelligence, Machine Learning, Deep Learning, and Generative AI relate to each other.",
+tx:"Which of the following correctly represents the hierarchical relationship from broadest to most specialized?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Machine Learning > Deep Learning > Artificial Intelligence > Generative AI"},
+{l:"B",t:"Artificial Intelligence > Generative AI > Machine Learning > Deep Learning"},
+{l:"C",t:"Artificial Intelligence > Machine Learning > Deep Learning > Generative AI"},
+{l:"D",t:"Generative AI > Deep Learning > Machine Learning > Artificial Intelligence"}],
+cor:["C"],
+exp:"The correct hierarchy from broadest to most specialized is: AI (broadest field of simulating human intelligence) > ML (subset of AI, learning from data) > Deep Learning (subset of ML, multi-layer neural networks) > Generative AI (subset of DL, creates new content). LLMs are one class of Foundation Models, which are a type of Generative AI.",
+alert:"The exam tests this hierarchy frequently. Also remember: Foundation Models (FMs) are NOT a class of LLMs — it's the reverse. LLMs are one class of FMs.",
+kw:["AI > ML > DL > GenAI","hierarchy","subset","LLMs are a class of FMs"]},
+
+{id:8,t:"g",tag:"GenAI & Bedrock",tc:"tg",
+sc:"An enterprise software company is exploring Amazon Bedrock to integrate generative AI into its product suite. The CTO wants to understand the key characteristics of Foundation Models, specifically how they are initially trained and how they can later be customized for specific business tasks.",
+tx:"Which statement is CORRECT regarding how Foundation Models learn during pre-training versus fine-tuning?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"FMs use supervised learning for pre-training with labeled data, and fine-tuning is also a supervised process with labeled data"},
+{l:"B",t:"FMs use self-supervised learning to create labels from unlabeled input data during pre-training, but fine-tuning is a supervised process using labeled data"},
+{l:"C",t:"FMs use self-supervised learning for both pre-training and fine-tuning"},
+{l:"D",t:"FMs use supervised learning for pre-training, but fine-tuning uses self-supervised learning with unlabeled data"}],
+cor:["B"],
+exp:"Foundation Models use SELF-supervised learning during pre-training — they generate their own labels from vast amounts of unlabeled data. No human has labeled the training data. However, FINE-TUNING an FM is a supervised learning process that uses labeled data (input-output pairs) to adapt the model for specific tasks. This is one of the most heavily tested concepts on the AIF-C01 exam.",
+alert:"FMs pre-training = self-supervised (unlabeled data, model creates own labels). Fine-tuning = supervised (labeled data, input-output pairs). Continued Pre-training = unlabeled data for domain exposure. These distinctions appear in multiple questions on every exam.",
+kw:["self-supervised learning","unlabeled pre-training","fine-tuning = supervised","labeled data","creates own labels"]},
+
+{id:9,t:"g",tag:"GenAI & Bedrock",tc:"tg",
+sc:"A healthcare technology company is customizing a Foundation Model in Amazon Bedrock. The data science team needs to clearly understand the two model customization methods available and the type of data each requires.",
+tx:"Which statement CORRECTLY describes the data requirements for continued pre-training versus fine-tuning in Amazon Bedrock?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Continued pre-training uses labeled data to pre-train the model, and fine-tuning also uses labeled data"},
+{l:"B",t:"Continued pre-training uses labeled data, whereas fine-tuning uses unlabeled data"},
+{l:"C",t:"Both continued pre-training and fine-tuning use unlabeled data"},
+{l:"D",t:"Continued pre-training uses unlabeled data to familiarize the model with a domain, whereas fine-tuning uses labeled data to improve performance on specific tasks"}],
+cor:["D"],
+exp:"Continued Pre-training provides UNLABELED data to expose the model to domain-specific knowledge (e.g., medical literature, legal documents). The model parameters are tweaked to improve domain understanding. Fine-tuning provides LABELED data (input-output pairs) to train the model for specific tasks. Both methods create a private copy of the base FM — they do NOT modify the original base model.",
+alert:"Continued Pre-training = UNLABELED, domain knowledge. Fine-tuning = LABELED, task-specific. Both are model customization methods that change model weights. RAG and Prompt Engineering are NOT model customization — they don't change weights.",
+kw:["continued pre-training = unlabeled","fine-tuning = labeled","domain knowledge","task-specific","model customization"]},
+
+{id:10,t:"g",tag:"GenAI & Bedrock",tc:"tg",
+sc:"A retail company is building an AI-powered product assistant using Amazon Bedrock. The architect is evaluating three approaches to improve the Foundation Model's responses: prompt engineering, Retrieval Augmented Generation (RAG), and fine-tuning. The team needs to understand which techniques modify the model's weights.",
+tx:"Which statement CORRECTLY describes which techniques change the FM's weights?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Prompt engineering changes weights; RAG does not; fine-tuning does not"},
+{l:"B",t:"Fine-tuning changes weights; RAG does not change weights; prompt engineering does not change weights"},
+{l:"C",t:"Both RAG and fine-tuning change weights; prompt engineering does not"},
+{l:"D",t:"None of the three techniques change the FM's weights"}],
+cor:["B"],
+exp:"Only fine-tuning changes the FM's weights — it retrains the model on new labeled data, modifying internal parameters. RAG retrieves external data at query time to augment the prompt but does NOT change model weights. Prompt engineering crafts better prompts but also does NOT change weights. The complexity order is: Prompt Engineering (lowest) → RAG (medium) → Fine-tuning (highest).",
+alert:"EXAM FAVORITE: Prompt engineering = NO weight change. RAG = NO weight change. Fine-tuning = CHANGES weights. Also remember complexity order: Prompt Eng < RAG < Fine-tuning.",
+kw:["fine-tuning changes weights","RAG no weight change","prompt engineering no weight change","complexity order"]},
+
+{id:11,t:"g",tag:"GenAI & Bedrock",tc:"tg",
+sc:"A legal services firm has fine-tuned a Foundation Model on Amazon Bedrock using its proprietary case law dataset. The model is ready for testing and deployment. The operations team needs to understand the deployment requirements for custom models in Amazon Bedrock.",
+tx:"Which deployment mode is REQUIRED for testing and deploying a customized model (fine-tuned or continued pre-training) on Amazon Bedrock?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"On-Demand mode, which provides flexibility by charging only for resources consumed during each inference"},
+{l:"B",t:"Provisioned Throughput mode, which reserves a specific amount of capacity in advance for the custom model"},
+{l:"C",t:"Batch inference mode, which processes multiple requests asynchronously at reduced cost"},
+{l:"D",t:"Serverless mode, which automatically scales resources based on incoming traffic patterns"}],
+cor:["B"],
+exp:"For testing and deploying customized models on Amazon Bedrock (via fine-tuning or continued pre-training), it is MANDATORY to use Provisioned Throughput. On-Demand mode does not support custom models. Batch inference processes multiple requests but is not a deployment mode for custom models. Serverless inference is a SageMaker concept, not available for Bedrock custom models.",
+alert:"Custom models on Bedrock = Provisioned Throughput ONLY. On-Demand = base models only. You also CANNOT train base FMs on Bedrock — you only customize by creating a private copy.",
+kw:["Provisioned Throughput","mandatory for custom models","On-Demand = base models only","private copy"]},
+
+{id:12,t:"g",tag:"GenAI & Bedrock",tc:"tg",
+sc:"A data analytics company is building a knowledge management system using Amazon Bedrock. They plan to store and retrieve embeddings for natural language processing and document search. The architect needs to select the appropriate vector database for their Bedrock Knowledge Base implementation.",
+tx:"If the company does not have an existing vector database, which vector store does Amazon Bedrock create by default for Knowledge Bases?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"MongoDB"},
+{l:"B",t:"Redis Enterprise Cloud"},
+{l:"C",t:"Amazon OpenSearch Serverless vector store"},
+{l:"D",t:"Amazon Aurora"}],
+cor:["C"],
+exp:"Knowledge Bases for Amazon Bedrock handles the entire RAG ingestion workflow — converting documents into embeddings and storing them in a vector database. Supported databases include OpenSearch Serverless, Pinecone, Redis Enterprise Cloud, Amazon Aurora, and MongoDB. If you do NOT have an existing vector database, Bedrock creates an Amazon OpenSearch Serverless vector store by default.",
+kw:["OpenSearch Serverless","default vector store","Knowledge Bases","RAG ingestion","embeddings"]},
+
+{id:13,t:"g",tag:"GenAI & Bedrock",tc:"tg",
+sc:"A software company is evaluating AWS services for developing LLM-based solutions including chatbots, text summarization, and code generation. The team is comparing Amazon Q, Amazon Bedrock, and Amazon SageMaker JumpStart to understand their distinct roles and capabilities.",
+tx:"Which statements CORRECTLY describe the differences between Amazon Q and Amazon Bedrock? (Select TWO)",
+ins:"Select TWO answers.",m:true,
+ops:[
+{l:"A",t:"Both Amazon Q and Amazon Bedrock are generative AI-powered assistants that create pre-packaged applications"},
+{l:"B",t:"Amazon Q is a generative AI-powered assistant for pre-packaged applications, whereas Amazon Bedrock provides an environment to build and scale generative AI applications using Foundation Models"},
+{l:"C",t:"With Amazon Bedrock, you can choose the underlying Foundation Model; Amazon Q does not allow you to choose the underlying FM"},
+{l:"D",t:"With Amazon Q, you can choose the underlying Foundation Model; Amazon Bedrock does not allow FM selection"},
+{l:"E",t:"Amazon Bedrock is a pre-packaged assistant, whereas Amazon Q provides the build environment for custom GenAI apps"}],
+cor:["B","C"],
+exp:"Amazon Q is a pre-packaged generative AI assistant (Q Developer for coding, Q Business for enterprise data). Amazon Bedrock is a platform for building and scaling custom generative AI applications with Foundation Models. With Bedrock, you choose from multiple FMs (Anthropic, Meta, Mistral, Amazon, etc.). With Amazon Q, you cannot choose the underlying FM. Both Q Developer and Q Business are powered by Amazon Bedrock under the hood.",
+alert:"Q = pre-packaged assistant (no FM choice). Bedrock = build platform (choose your FM). Both Q Developer and Q Business are powered by Bedrock. SageMaker JumpStart = ML hub with FMs + built-in algorithms + one-click deployment.",
+kw:["Q = pre-packaged","Bedrock = build platform","choose FM in Bedrock","Q powered by Bedrock"]},
+
+// ═══ APPLICATIONS & PROMPT ENGINEERING (4) ═══
+{id:14,t:"a",tag:"Applications & Prompt Eng",tc:"ta",
+sc:"A customer intelligence platform is using Amazon Bedrock to classify incoming support tickets by intent — refund requests, technical issues, billing inquiries, and product feedback. The team is using few-shot prompting to train the model to recognize these intents accurately.",
+tx:"What type of data should be included in the few-shot examples to help the model accurately recognize user intent?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"User-input paired with the model's generated response, showing the model's output alongside the original query"},
+{l:"B",t:"User-input paired with the correct user intent, providing examples of customer queries matched to their corresponding intent labels"},
+{l:"C",t:"Model-response paired with the correct user intent, matching generated outputs to intended categories"},
+{l:"D",t:"User-input paired with the correct model-response, focusing on matching queries to specific response text"}],
+cor:["B"],
+exp:"Few-shot prompting for intent classification requires examples that pair the user's actual query (input) with the correct intent label (output). This teaches the model to MAP inputs to intents. Providing model-responses instead of intent labels would train for response generation, not intent recognition. The few-shot examples serve as demonstrations of the pattern the model should follow.",
+kw:["user-input + correct intent","few-shot examples","input-output pairs","intent classification","pattern demonstration"]},
+
+{id:15,t:"a",tag:"Applications & Prompt Eng",tc:"ta",
+sc:"A healthcare analytics company is developing machine learning models to predict patient outcomes and improve treatment plans. To enhance these models, conduct rigorous testing, and ensure data privacy when sharing with partners, the company needs to generate synthetic data that closely mirrors its existing patient records without compromising sensitive information. The synthetic data must maintain the statistical properties and patterns of the original dataset to be useful for model training and evaluation.",
+tx:"Which of the following methods would be most suitable for generating synthetic data?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"The company should use Support Vector Machines (SVMs), a type of supervised learning algorithm used for generating synthetic data"},
+{l:"B",t:"The company should use WaveNet, a deep generative model specifically designed for generating general-purpose synthetic data across various domains"},
+{l:"C",t:"The company should use a Generative Adversarial Network (GAN) for creating realistic synthetic data while preserving the statistical properties of the original data"},
+{l:"D",t:"The company should use a Convolutional Neural Network (CNN), a type of deep learning model, best-suited for generating synthetic data"}],
+cor:["C"],
+exp:"GANs are specifically designed for generating synthetic data that is statistically similar to real data. They consist of two neural networks — a generator and a discriminator — that work against each other to create highly realistic synthetic data. The generator creates fake data samples by adding random noise, while the discriminator tries to distinguish between real and fake data. This adversarial process continues until the generator produces data so convincing that the discriminator can't differentiate it from real data. GANs have been successfully used in image generation, text synthesis, and more to produce data that retains underlying patterns and structures of the original dataset. SVMs are for classification/regression, not data generation. CNNs are for image recognition/classification, not generating synthetic data. WaveNet is specifically for audio data synthesis, not general-purpose synthetic data.",
+alert:"GANs = generator + discriminator in competition. Generator creates fake data, discriminator tries to spot fakes. Used for: synthetic data generation, image generation, data augmentation. SVMs = classification/regression. CNNs = image recognition. WaveNet = audio synthesis only.",
+kw:["GAN","generator vs discriminator","synthetic data","adversarial","statistical properties","two neural networks"]},
+
+{id:16,t:"a",tag:"Applications & Prompt Eng",tc:"ta",
+sc:"An accounting firm is deploying a generative AI model on Amazon Bedrock to help junior analysts work through complex multi-step tax calculations. When asked directly, the model frequently produces incorrect final answers. However, when guided to show its work, accuracy improves dramatically.",
+tx:"Which prompt engineering technique is MOST effective for improving accuracy on complex, multi-step reasoning tasks?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Zero-shot prompting with a very detailed problem description"},
+{l:"B",t:"Chain-of-thought prompting, asking the model to solve the problem step by step and show its reasoning at each stage"},
+{l:"C",t:"Reducing the prompt length to minimize confusion"},
+{l:"D",t:"Increasing the maximum output tokens to give the model more space for the answer"}],
+cor:["B"],
+exp:"Chain-of-thought (CoT) prompting breaks complex questions into smaller, logical intermediate steps that mimic human reasoning. Research shows CoT dramatically improves performance on math, logic, and multi-step problems. Phrases like 'Let's think step by step' or 'Show your reasoning' activate this technique. Simply adding detail or output tokens doesn't address the underlying reasoning challenge.",
+kw:["chain-of-thought","step by step","intermediate steps","reasoning","show your work"]},
+
+{id:17,t:"a",tag:"Applications & Prompt Eng",tc:"ta",
+sc:"A SaaS company is deploying a generative AI model on Amazon Bedrock. Each API call includes 10 sample task examples as part of the prompt to guide the model's behavior. The finance team has flagged that inference costs are significantly higher than budgeted and wants the engineering team to find ways to reduce costs.",
+tx:"Which approach would be MOST effective in minimizing the costs associated with model usage?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Reduce the Temperature inference parameter for the model to make responses more deterministic"},
+{l:"B",t:"Reduce the batch size while training the model to lower computational overhead"},
+{l:"C",t:"Reduce the number of tokens in the input by using fewer or more concise examples"},
+{l:"D",t:"Reduce the Top P inference parameter to limit the candidate pool for token selection"}],
+cor:["C"],
+exp:"Amazon Bedrock pricing is directly proportional to the number of tokens processed (both input and output). Reducing input tokens — by using fewer examples, making them more concise, or shortening the system prompt — directly reduces cost per request. Temperature and Top P affect output randomness, not cost. Batch size relates to training, and you cannot train base FMs on Bedrock — only customize via Provisioned Throughput.",
+alert:"Bedrock cost = proportional to tokens (input + output). To reduce cost: reduce input tokens, reduce output length, or use batch inference (50% of on-demand pricing). Temperature/Top P/Top K do NOT affect cost.",
+kw:["reduce tokens = reduce cost","pricing per token","input + output tokens","batch inference 50% off"]},
+
+// ═══ RESPONSIBLE AI & SECURITY (3) ═══
+{id:18,t:"r",tag:"Responsible AI & Security",tc:"tr",
+sc:"A government agency has deployed an AI-powered surveillance system that uses computer vision to flag suspicious behavior at public facilities. Community oversight groups have reported that the system disproportionately flags individuals from certain ethnic backgrounds. An investigation reveals that the training dataset contained significantly more images of some demographic groups than others.",
+tx:"Which type of bias is MOST likely responsible for the system's discriminatory behavior?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Confirmation bias — the system reinforces pre-existing beliefs about certain groups"},
+{l:"B",t:"Measurement bias — inaccurate data collection equipment produced inconsistent training data"},
+{l:"C",t:"Sampling bias — the training data does not accurately reflect the diversity of the real-world population"},
+{l:"D",t:"Observer bias — human reviewers introduced subjective judgments during data labeling"}],
+cor:["C"],
+exp:"Sampling bias occurs when training data doesn't accurately reflect the diversity of the real-world population. When certain demographic groups are under or overrepresented in training data, the model learns biased patterns that lead to discriminatory outcomes. Measurement bias involves data collection inaccuracies. Observer bias relates to human subjectivity. Confirmation bias involves reinforcing pre-existing beliefs.",
+alert:"When the exam mentions demographic representation, training data diversity, or under/overrepresented groups → sampling bias. When it mentions data collection equipment errors → measurement bias.",
+kw:["sampling bias","underrepresented","training data diversity","demographic groups","discriminatory outcomes"]},
+
+{id:19,t:"r",tag:"Responsible AI & Security",tc:"tr",
+sc:"A financial services company has fine-tuned a Foundation Model on Amazon Bedrock using proprietary trading strategy documents. After deployment, the compliance team discovers that some model responses inadvertently contain fragments of confidential client account numbers and internal strategy details that were present in the fine-tuning dataset.",
+tx:"What is the MOST efficient approach to prevent the model from exposing this confidential information in its responses?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Delete the customized model, scrub all confidential data from the training set, and re-run the fine-tuning job from scratch"},
+{l:"B",t:"Implement Amazon Bedrock Guardrails to detect and mask sensitive information such as PII in model responses using content filtering and regex patterns"},
+{l:"C",t:"Use encryption (AWS KMS) to protect the confidential information within the model responses before delivering them to users"},
+{l:"D",t:"Migrate the entire solution from Amazon Bedrock to Amazon SageMaker and rebuild using built-in algorithms that don't retain training data"}],
+cor:["B"],
+exp:"Amazon Bedrock Guardrails can detect and redact sensitive information like PII in both input prompts and model responses in real-time. You can configure custom patterns using regex. This is the most efficient approach — no retraining required, no downtime, and it provides real-time filtering. Deleting and retraining is expensive and time-consuming. Encryption protects data in transit/at rest but doesn't prevent the model from generating sensitive content. Migrating platforms is unnecessary overhead.",
+alert:"Guardrails = filter harmful content, redact PII, block topics, enforce safety policies. Works on BOTH inputs and outputs. Works across all Bedrock FMs. Does NOT require retraining.",
+kw:["Bedrock Guardrails","mask PII","redact sensitive info","real-time filtering","content filtering","regex patterns"]},
+
+{id:20,t:"r",tag:"Responsible AI & Security",tc:"tr",
+sc:"A global consulting firm is deploying generative AI applications on Amazon Bedrock. The security team wants to understand the data privacy guarantees that Amazon Bedrock provides, particularly regarding whether client data used in prompts or for model customization could be shared with third-party model providers or used to improve the underlying base Foundation Models.",
+tx:"Which statement CORRECTLY describes Amazon Bedrock's data privacy practices?",
+ins:"Select ONE answer.",m:false,
+ops:[
+{l:"A",t:"Customer data is used to improve the base Foundation Models but is not shared with model providers"},
+{l:"B",t:"Customer data is not used to improve base FMs, but it is shared with model providers for optimization"},
+{l:"C",t:"Customer data is not used to improve the base Foundation Models and is not shared with any model providers"},
+{l:"D",t:"Customer data is used to improve base FMs and is shared with model providers for model optimization"}],
+cor:["C"],
+exp:"With Amazon Bedrock, your content is NOT used to improve the base models and is NOT shared with any model providers. Your data is always encrypted in transit and at rest. You can optionally encrypt with your own keys (AWS KMS). You can use AWS PrivateLink for private connectivity without exposing traffic to the internet. Customized FMs remain in the AWS Region where the API call is processed.",
+alert:"Bedrock data privacy: NOT used to improve base FMs + NOT shared with providers + encrypted in transit and at rest + stays in same Region. This is a frequently tested compliance question.",
+kw:["not used to improve base FMs","not shared with providers","encrypted","stays in Region","data privacy"]}
+];
+
+// ═══ APP STATE ═══
+let S={md:null,tp:['f','g','a','r'],qs:[],ci:0,an:{},rv:{},ti:null,t0:null,el:0,lm:1800};
+function sh(id){['s0','s1','s2','s3'].forEach(s=>document.getElementById(s).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+function tt(e){e.classList.toggle('on');const t=e.dataset.t,i=S.tp.indexOf(t);if(i>-1)S.tp.splice(i,1);else S.tp.push(t);document.getElementById('gb').disabled=!S.tp.length;}
+function pm(m,e){document.querySelectorAll('.mc').forEach(c=>c.classList.remove('on'));e.classList.add('on');S.md=m;}
+function sf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+// highlight keywords in text
+function hlText(text, kws){
+  if(!kws||!kws.length) return text;
+  // build phrases to highlight from keywords, sorted longest first
+  const phrases=kws.flatMap(k=>k.split(',').map(s=>s.trim())).filter(s=>s.length>2).sort((a,b)=>b.length-a.length);
+  let result=text;
+  const used=new Set();
+  phrases.forEach(ph=>{
+    // escape regex special chars
+    const esc=ph.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    const rx=new RegExp(`(${esc})`,'gi');
+    if(rx.test(result)&&!used.has(ph.toLowerCase())){
+      result=result.replace(rx,'<span class="hl">$1</span>');
+      used.add(ph.toLowerCase());
+    }
+  });
+  return result;
+}
+function go(){if(!S.md)S.md='practice';let p=Q.filter(q=>S.tp.includes(q.t));p=sf(p);S.qs=p.slice(0,20);S.ci=0;S.an={};S.rv={};S.el=0;S.t0=Date.now();if(S.md==='exam')st();sh('s1');rq();}
+function st(){const d=document.getElementById('ti');d.innerHTML='⏱ 30:00';S.ti=setInterval(()=>{S.el=Math.floor((Date.now()-S.t0)/1000);const r=S.lm-S.el;if(r<=0){clearInterval(S.ti);fn();return;}d.innerHTML=`⏱ ${String(Math.floor(r/60)).padStart(2,'0')}:${String(r%60).padStart(2,'0')}`;if(r<=120)d.style.color='var(--rd)';else if(r<=300)d.style.color='var(--am)';},1000);}
+function rq(){
+  const q=S.qs[S.ci],n=S.ci+1,tot=S.qs.length;
+  document.getElementById('px').textContent=`${n} / ${tot}`;
+  document.getElementById('pf').style.width=`${(n/tot)*100}%`;
+  document.getElementById('qn').textContent=`Question ${n}`;
+  const tg=document.getElementById('qt');tg.textContent=q.tag;tg.className=`qt ${q.tc}`;
+  const ir=S.rv[q.id];
+  // scenario — highlight keywords after reveal
+  if(q.sc){
+    const scText=ir?hlText(q.sc,q.kw):q.sc;
+    document.getElementById('qsc').innerHTML=`<div class="qs">${scText}</div>`;
+  }else{document.getElementById('qsc').innerHTML='';}
+  // question text — highlight after reveal
+  const qText=ir?hlText(q.tx,q.kw):q.tx;
+  document.getElementById('qx').innerHTML=qText;
+  document.getElementById('qi').textContent=q.ins;
+  const ol=document.getElementById('os');ol.innerHTML='';
+  const se=S.an[q.id]||[];
+  q.ops.forEach(o=>{
+    const b=document.createElement('button');b.className='o';
+    const iS=se.includes(o.l),iC=q.cor.includes(o.l);
+    if(ir){b.classList.add('dis');if(iC)b.classList.add('cor');else if(iS&&!iC)b.classList.add('inc');}
+    else if(iS)b.classList.add('sel');
+    // highlight keywords in options after reveal
+    const oText=ir?hlText(o.t,q.kw):o.t;
+    b.innerHTML=`<span class="ol">${o.l}</span><span>${oText}</span>`;
+    if(!ir)b.onclick=()=>to(q,o.l);
+    ol.appendChild(b);
+  });
+  const sb=document.getElementById('sb'),nb=document.getElementById('nb');
+  if(ir){sb.classList.add('hidden');nb.classList.remove('hidden');nb.textContent=n===tot?'See Results →':'Next →';}
+  else{sb.classList.remove('hidden');nb.classList.add('hidden');sb.disabled=!se.length;sb.textContent=S.md==='exam'?(n===tot?'Finish Exam':'Next →'):'Check Answer';}
+  const ea=document.getElementById('ea');
+  if(ir&&S.md==='practice'){
+    const ok=q.cor.length===se.length&&q.cor.every(c=>se.includes(c));
+    ea.innerHTML=`<div class="eb"><h4 class="${ok?'ct':'it'}">${ok?'✅ Correct!':'❌ Incorrect'} — Answer: ${q.cor.join(', ')}</h4><div class="et">${q.exp}</div>${q.alert?`<div class="ea"><h5>⚠️ Exam Alert</h5><p>${q.alert}</p></div>`:''}<div class="kb"><h5>🔑 Exam Keywords — highlighted above in the question</h5><p>${q.kw.map(k=>`<span class="kt">${k}</span>`).join(' ')}</p></div></div>`;
+  }else ea.innerHTML='';
+}
+function to(q,l){let s=S.an[q.id]||[];if(q.m){const i=s.indexOf(l);if(i>-1)s.splice(i,1);else{if(s.length<q.cor.length)s.push(l);else{s.shift();s.push(l);}}}else s=s[0]===l?[]:[l];S.an[q.id]=s;rq();}
+function su(){const q=S.qs[S.ci];if(S.md==='practice'){S.rv[q.id]=true;rq();}else{if(S.ci<S.qs.length-1){S.ci++;rq();window.scrollTo({top:0,behavior:'smooth'});}else fn();}}
+function nx(){if(S.ci<S.qs.length-1){S.ci++;rq();window.scrollTo({top:0,behavior:'smooth'});}else fn();}
+function fn(){if(S.ti)clearInterval(S.ti);S.el=Math.floor((Date.now()-S.t0)/1000);let c=0;S.qs.forEach(q=>{const a=S.an[q.id]||[];if(q.cor.length===a.length&&q.cor.every(x=>a.includes(x)))c++;});const tot=S.qs.length,pc=Math.round((c/tot)*100),pa=pc>=70;sh('s2');setTimeout(()=>{const r=document.getElementById('rf'),ci=2*Math.PI*70;r.style.stroke=pa?'var(--gr)':'var(--rd)';r.style.strokeDashoffset=ci-(pc/100)*ci;document.getElementById('sp').textContent=pc+'%';document.getElementById('sp').style.color=pa?'var(--gr)':'var(--rd)';},100);document.getElementById('s_c').textContent=c;document.getElementById('s_i').textContent=tot-c;document.getElementById('s_t').textContent=`${Math.floor(S.el/60)}m ${S.el%60}s`;const p=document.getElementById('pi');p.textContent=pa?'🎉 PASS (≥ 70%)':'📚 NEEDS REVIEW (< 70%)';p.className=`pi ${pa?'pa':'fa'}`;const rl=document.getElementById('rl');rl.innerHTML='';S.qs.forEach((q,i)=>{const a=S.an[q.id]||[],ok=q.cor.length===a.length&&q.cor.every(x=>a.includes(x));const d=document.createElement('div');d.className='ri';d.onclick=()=>{S.ci=i;S.rv[q.id]=true;S.md='practice';sh('s1');rq();const nb=document.getElementById('nb');nb.textContent='Back to Results';nb.onclick=()=>{sh('s2');nb.onclick=()=>nx();};};d.innerHTML=`<div class="rh"><span style="font-size:16px">${ok?'✅':'❌'}</span><span style="font-family:'Source Code Pro',monospace;font-size:12px;color:var(--mu)">Q${i+1}</span><span class="qt ${q.tc}" style="font-size:10px;padding:2px 8px">${q.tag}</span></div><div class="rq">${q.tx}</div>`;rl.appendChild(d);});}
+function fr(){const c=document.getElementById('s3');c.innerHTML=`<div style="margin-bottom:14px"><button class="b b2" onclick="sh('s2')">← Back to Score</button></div><div class="st">Full Review — All 20 Questions</div>`;S.qs.forEach((q,i)=>{const a=S.an[q.id]||[],ok=q.cor.length===a.length&&q.cor.every(x=>a.includes(x));let oh=q.ops.map(o=>{const iS=a.includes(o.l),iC=q.cor.includes(o.l);let cl='o dis';if(iC)cl+=' cor';else if(iS&&!iC)cl+=' inc';return`<div class="${cl}"><span class="ol">${o.l}</span><span>${hlText(o.t,q.kw)}</span></div>`;}).join('');const scH=q.sc?`<div class="qs">${hlText(q.sc,q.kw)}</div>`:'';c.innerHTML+=`<div class="qc"><div class="qh"><span class="qn">Q${i+1} ${ok?'✅':'❌'}</span><span class="qt ${q.tc}">${q.tag}</span></div>${scH}<div class="qx">${hlText(q.tx,q.kw)}</div><div class="os" style="margin:14px 0">${oh}</div><div class="eb"><h4 class="${ok?'ct':'it'}">Answer: ${q.cor.join(', ')}</h4><div class="et">${q.exp}</div>${q.alert?`<div class="ea"><h5>⚠️ Exam Alert</h5><p>${q.alert}</p></div>`:''}<div class="kb"><h5>🔑 Exam Keywords — highlighted above in the question</h5><p>${q.kw.map(k=>`<span class="kt">${k}</span>`).join(' ')}</p></div></div></div>`;});c.innerHTML+=`<div class="br" style="justify-content:center;margin:22px 0"><button class="b b1" onclick="rs()">Try Again</button></div>`;sh('s3');window.scrollTo({top:0,behavior:'smooth'});}
+function rs(){if(S.ti)clearInterval(S.ti);S={md:null,tp:['f','g','a','r'],qs:[],ci:0,an:{},rv:{},ti:null,t0:null,el:0,lm:1800};document.querySelectorAll('.ch').forEach(c=>c.classList.add('on'));document.querySelectorAll('.mc').forEach(c=>c.classList.remove('on'));document.getElementById('ti').style.color='';document.getElementById('gb').disabled=false;sh('s0');window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+</body>
+</html>
